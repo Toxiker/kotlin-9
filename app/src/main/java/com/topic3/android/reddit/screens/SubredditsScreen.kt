@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.topic3.android.reddit.R
+import com.topic3.android.reddit.components.BackgroundText
 import com.topic3.android.reddit.models.SubredditModel
 
 val subreddits = listOf(
@@ -68,7 +69,21 @@ val communities = listOf(
 
 @Composable
 fun SubredditsScreen(modifier: Modifier = Modifier) {
-    //TODO add your code here
+    Column(modifier = modifier
+        .verticalScroll(rememberScrollState())
+    ) {
+        Text(modifier = modifier.padding(16.dp),
+            text = stringResource(R.string.recently_visited_subreddits),
+            fontSize = 12.sp,
+            style = MaterialTheme.typography.subtitle1
+        )
+
+        LazyRow(modifier = modifier.padding(end = 16.dp)
+        ){
+            items(subreddits){ Subreddit(it)}
+        }
+        Communities(modifier)
+    }
 }
 
 @Composable
@@ -207,31 +222,39 @@ fun Community(text: String, modifier: Modifier = Modifier,
 
 @Composable
 fun Communities(modifier: Modifier = Modifier) {
-    //TODO add your code here
-}
+    mainCommunities.forEach {
+        Community(text = stringResource(it))
 
-@Preview
-@Composable
-fun SubredditBodyPreview() {
-    SubredditBody(SubredditModel.DEFAULT_SUBREDDIT)
-}
+    }
+    Spacer(modifier = modifier.height(4.dp))
+    BackgroundText(stringResource(R.string.communities))
+    communities.forEach {
+        Community(text = stringResource(it))
+    }
 
-@Preview
-@Composable
-fun SubredditPreview() {
-    Subreddit(SubredditModel.DEFAULT_SUBREDDIT)
-}
 
-@Preview
-@Composable
-fun CommunityPreview() {
-    Community(stringResource(id = R.string.raywenderlich_com))
-}
+    @Composable
+    fun SubredditBodyPreview() {
+        SubredditBody(SubredditModel.DEFAULT_SUBREDDIT)
+    }
 
-@Preview
-@Composable
-fun CommunitiesPreview() {
-    Column {
-        Communities()
+
+    @Composable
+    fun SubredditPreview() {
+        Subreddit(SubredditModel.DEFAULT_SUBREDDIT)
+    }
+
+
+    @Composable
+    fun CommunityPreview() {
+        Community(stringResource(id = R.string.raywenderlich_com))
+    }
+
+
+    @Composable
+    fun CommunitiesPreview() {
+        Column {
+            Communities()
+        }
     }
 }
